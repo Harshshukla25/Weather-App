@@ -13,6 +13,7 @@ import sunset_icon from "../assets/sunset.png";
 import mic_icon from "../assets/microphone.png";
 import volume_icon from "../assets/volume.png";
 import timezone_icon from "../assets/timezone.png";
+import volume_off_icon from "../assets/silent.png";
 
 // Videos
 import clear_sky_video from "../assets/clear-sky.mp4";
@@ -25,6 +26,8 @@ const WeatherBox = () => {
   const [weatherData, setWeatherData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [isSpeaking, setIsSpeaking] = useState(false);
+const speechRef = useRef(null);
 
   const allIcons = {
     "01d": clear_icon,
@@ -90,16 +93,29 @@ const WeatherBox = () => {
 const speakWeather = () => {
   if (!weatherData) return;
 
-  const speech = new SpeechSynthesisUtterance(
-    `Currently in ${weatherData.location}, it is ${weatherData.temperature} degrees Celsius, 
-    feels like ${weatherData.feelsLike} degrees. 
-    Weather condition is ${weatherData.condition}. 
-    The current local time  is ${weatherData.localTime}.
-    Humidity is ${weatherData.humidity} percent and wind speed is ${weatherData.windSpeed} kilometers per hour.`
-  );
+  if (isSpeaking) {
+    // Stop speaking
+    window.speechSynthesis.cancel();
+    setIsSpeaking(false);
+  } else {
+    // Start speaking
+    const speech = new SpeechSynthesisUtterance(
+      `Currently in ${weatherData.location}, it is ${weatherData.temperature} degrees Celsius, 
+      feels like ${weatherData.feelsLike} degrees. 
+      Weather condition is ${weatherData.condition}. 
+      The current local time is ${weatherData.localTime}.
+      Humidity is ${weatherData.humidity} percent and wind speed is ${weatherData.windSpeed} kilometers per hour.`
+    );
+    speech.lang = "en-US";
 
-  speech.lang = "en-US";
-  window.speechSynthesis.speak(speech);
+    speech.onend = () => {
+      setIsSpeaking(false); // reset when done
+    };
+
+    speechRef.current = speech;
+    window.speechSynthesis.speak(speech);
+    setIsSpeaking(true);
+  }
 };
 
 
@@ -173,156 +189,6 @@ const speakWeather = () => {
  
 
   return (
-    // <div className="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
-    //   {/* Background Video */}
-    //   {weatherData && (
-    //     <video
-    //       key={weatherData.condition}
-    //       autoPlay
-    //       loop
-    //       muted
-    //       playsInline
-    //       className="absolute inset-0 w-full h-full object-cover"
-    //       src={videoBackgrounds[weatherData.condition] || cloudy_video}
-    //     />
-    //   )}
-
-    //   {/* Overlay */}
-    //   <div className="absolute inset-0 bg-black/30"></div>
-
-    //   {/* Foreground */}
-    //   <div className="relative z-10 mt-6 mb-6 place-self-center p-12 rounded-xl shadow-xl flex flex-col items-center w-[90%] max-w-lg bg-black/20 backdrop-blur-md">
-    //     {/* Search bar */}
-    //     <div className="flex items-center gap-3 w-full mb-2">
-    //       <input
-    //         ref={inputRef}
-    //         type="text"
-    //         placeholder="Search city..."
-    //         onKeyDown={(e) => e.key === "Enter" && search(inputRef.current.value)}
-    //         className="flex-1 h-[50px] rounded-full pl-6 text-[#626262] bg-[#ebfffc] text-lg outline-none border-none focus:ring-2 focus:ring-blue-300 transition"
-    //       />
-    //       <img
-    //         src={search_icon}
-    //         alt="Search"
-    //         onClick={() => search(inputRef.current.value)}
-    //         className="w-[50px] p-[15px] rounded-full bg-[#ebfffc] cursor-pointer hover:scale-110 transition-transform"
-    //       />
-    //       <img
-    //         src={mic_icon}
-    //         alt="Voice Search"
-    //         onClick={startVoiceSearch}
-    //         className="w-[50px] p-[12px] rounded-full bg-[#ebfffc] cursor-pointer hover:scale-110 transition-transform"
-    //       />
-    //       <img
-    //         src={volume_icon}
-    //         alt="Speaker"
-    //         onClick={speakWeather}
-    //         className="w-[50px] p-[12px] rounded-full bg-[#ebfffc] cursor-pointer hover:scale-110 transition-transform"
-    //       />
-          
-    //     </div>
-
-    //     {/* Loading & Error */}
-    //     {loading && <p className="text-white text-lg">Loading...</p>}
-    //     {error && <p className="text-red-500">{error}</p>}
-
-    //     {/* Weather Info */}
-    //     {weatherData && !loading && (
-    //       <>
-    //         <img
-    //           src={weatherData.icon}
-    //           alt=""
-    //           className="w-[150px] my-[15px] transition-transform duration-500 hover:scale-110"
-    //         />
-    //         <p className="text-white text-[60px] leading-none font-semibold">
-    //           {weatherData.temperature}°C
-    //         </p>
-    //         <p className="text-white text-md italic mb-2">
-    //           Feels like {weatherData.feelsLike}°C
-    //         </p>
-    //         <p className="text-white text-[40px] font-medium">
-    //           {weatherData.location}
-    //         </p>
-
-    //         {/* Stats */}
-    //         <div className="w-full mt-8 text-white flex flex-wrap justify-between gap-6">
-    //           {/* Humidity */}
-    //           <div className="flex items-start gap-3 text-[20px]">
-    //             <img src={humidity_icon} alt="" className="w-[26px] mt-[5px]" />
-    //             <div>
-    //               <p>{weatherData.humidity}%</p>
-    //               <span className="block text-sm">Humidity</span>
-    //             </div>
-    //           </div>
-
-    //           {/* Wind */}
-    //           <div className="flex items-start gap-3 text-[20px]">
-    //             <img src={wind_icon} alt="" className="w-[26px] mt-[5px]" />
-    //             <div>
-    //               <p>{weatherData.windSpeed} km/h</p>
-    //               <span className="block text-sm">Wind Speed</span>
-    //             </div>
-    //           </div>
-
-    //           {/*current local time*/}
-    //           <div className="flex items-start gap-3 text-[20px]">
-    //             <img src={timezone_icon} alt="" className="w-[26px] mt-[5px]" />
-    //             <div>
-    //               <p>{weatherData.localTime} </p>
-    //               <span className="block text-sm">Local Time</span>
-    //             </div>
-    //           </div>
-
-
-    //           {/* Sunrise */}
-    //           <div className="flex items-start gap-3 text-[20px]">
-    //             <img src={sunrise_icon} alt="" className="w-8" />
-    //             <div>
-    //               <p>{formatTime(weatherData.sunrise)}</p>
-    //               <span className="block text-sm">Sunrise</span>
-    //             </div>
-    //           </div>
-
-    //           {/* Sunset */}
-    //           <div className="flex items-start gap-3 text-[20px]">
-    //             <img src={sunset_icon} alt="" className="w-12" />
-    //             <div>
-    //               <p>{formatTime(weatherData.sunset)}</p>
-    //               <span className="block text-sm">Sunset</span>
-    //             </div>
-    //           </div>
-    //         </div>
-
-    //         {/* 5-day Forecast */}
-    //         {weatherData.forecast && (
-    //           <div className="mt-8 w-full bg-white/10 rounded-xl p-4">
-    //             <h3 className="text-white text-lg mb-3">5-Day Forecast</h3>
-    //             <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
-    //               {weatherData.forecast
-    //                 .filter((_, index) => index % 8 === 0) // every 8th ~ 1 day
-    //                 .map((item, idx) => (
-    //                   <div key={idx} className="text-center text-white">
-    //                     <p>
-    //                       {new Date(item.dt * 1000).toLocaleDateString("en-US", {
-    //                         weekday: "short",
-    //                       })}
-    //                     </p>
-    //                     <img
-    //                       src={`https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
-    //                       alt=""
-    //                       className="mx-auto w-12"
-    //                     />
-    //                     <p>{Math.round(item.main.temp)}°C</p>
-    //                   </div>
-    //                 ))}
-    //             </div>
-    //           </div>
-    //         )}
-    //       </>
-    //     )}
-    //   </div>
-    // </div>
-
 
     <div className="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
   {/* Background Video */}
@@ -370,7 +236,7 @@ const speakWeather = () => {
     className="w-[40px] sm:w-[50px] p-[8px] sm:p-[12px] rounded-full bg-[#ebfffc] cursor-pointer hover:scale-110 transition-transform"
   />
   <img
-    src={volume_icon}
+    src={isSpeaking ? volume_off_icon : volume_icon}
     alt="Speaker"
     onClick={speakWeather}
     className="w-[40px] sm:w-[50px] p-[8px] sm:p-[12px] rounded-full bg-[#ebfffc] cursor-pointer hover:scale-110 transition-transform"
