@@ -173,155 +173,293 @@ const speakWeather = () => {
  
 
   return (
-    <div className="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Video */}
-      {weatherData && (
-        <video
-          key={weatherData.condition}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-          src={videoBackgrounds[weatherData.condition] || cloudy_video}
-        />
-      )}
+    // <div className="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
+    //   {/* Background Video */}
+    //   {weatherData && (
+    //     <video
+    //       key={weatherData.condition}
+    //       autoPlay
+    //       loop
+    //       muted
+    //       playsInline
+    //       className="absolute inset-0 w-full h-full object-cover"
+    //       src={videoBackgrounds[weatherData.condition] || cloudy_video}
+    //     />
+    //   )}
 
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black/30"></div>
+    //   {/* Overlay */}
+    //   <div className="absolute inset-0 bg-black/30"></div>
 
-      {/* Foreground */}
-      <div className="relative z-10 mt-6 mb-6 place-self-center p-12 rounded-xl shadow-xl flex flex-col items-center w-[90%] max-w-lg bg-black/20 backdrop-blur-md">
-        {/* Search bar */}
-        <div className="flex items-center gap-3 w-full mb-2">
-          <input
-            ref={inputRef}
-            type="text"
-            placeholder="Search city..."
-            onKeyDown={(e) => e.key === "Enter" && search(inputRef.current.value)}
-            className="flex-1 h-[50px] rounded-full pl-6 text-[#626262] bg-[#ebfffc] text-lg outline-none border-none focus:ring-2 focus:ring-blue-300 transition"
-          />
-          <img
-            src={search_icon}
-            alt="Search"
-            onClick={() => search(inputRef.current.value)}
-            className="w-[50px] p-[15px] rounded-full bg-[#ebfffc] cursor-pointer hover:scale-110 transition-transform"
-          />
-          <img
-            src={mic_icon}
-            alt="Voice Search"
-            onClick={startVoiceSearch}
-            className="w-[50px] p-[12px] rounded-full bg-[#ebfffc] cursor-pointer hover:scale-110 transition-transform"
-          />
-          <img
-            src={volume_icon}
-            alt="Speaker"
-            onClick={speakWeather}
-            className="w-[50px] p-[12px] rounded-full bg-[#ebfffc] cursor-pointer hover:scale-110 transition-transform"
-          />
+    //   {/* Foreground */}
+    //   <div className="relative z-10 mt-6 mb-6 place-self-center p-12 rounded-xl shadow-xl flex flex-col items-center w-[90%] max-w-lg bg-black/20 backdrop-blur-md">
+    //     {/* Search bar */}
+    //     <div className="flex items-center gap-3 w-full mb-2">
+    //       <input
+    //         ref={inputRef}
+    //         type="text"
+    //         placeholder="Search city..."
+    //         onKeyDown={(e) => e.key === "Enter" && search(inputRef.current.value)}
+    //         className="flex-1 h-[50px] rounded-full pl-6 text-[#626262] bg-[#ebfffc] text-lg outline-none border-none focus:ring-2 focus:ring-blue-300 transition"
+    //       />
+    //       <img
+    //         src={search_icon}
+    //         alt="Search"
+    //         onClick={() => search(inputRef.current.value)}
+    //         className="w-[50px] p-[15px] rounded-full bg-[#ebfffc] cursor-pointer hover:scale-110 transition-transform"
+    //       />
+    //       <img
+    //         src={mic_icon}
+    //         alt="Voice Search"
+    //         onClick={startVoiceSearch}
+    //         className="w-[50px] p-[12px] rounded-full bg-[#ebfffc] cursor-pointer hover:scale-110 transition-transform"
+    //       />
+    //       <img
+    //         src={volume_icon}
+    //         alt="Speaker"
+    //         onClick={speakWeather}
+    //         className="w-[50px] p-[12px] rounded-full bg-[#ebfffc] cursor-pointer hover:scale-110 transition-transform"
+    //       />
           
+    //     </div>
+
+    //     {/* Loading & Error */}
+    //     {loading && <p className="text-white text-lg">Loading...</p>}
+    //     {error && <p className="text-red-500">{error}</p>}
+
+    //     {/* Weather Info */}
+    //     {weatherData && !loading && (
+    //       <>
+    //         <img
+    //           src={weatherData.icon}
+    //           alt=""
+    //           className="w-[150px] my-[15px] transition-transform duration-500 hover:scale-110"
+    //         />
+    //         <p className="text-white text-[60px] leading-none font-semibold">
+    //           {weatherData.temperature}°C
+    //         </p>
+    //         <p className="text-white text-md italic mb-2">
+    //           Feels like {weatherData.feelsLike}°C
+    //         </p>
+    //         <p className="text-white text-[40px] font-medium">
+    //           {weatherData.location}
+    //         </p>
+
+    //         {/* Stats */}
+    //         <div className="w-full mt-8 text-white flex flex-wrap justify-between gap-6">
+    //           {/* Humidity */}
+    //           <div className="flex items-start gap-3 text-[20px]">
+    //             <img src={humidity_icon} alt="" className="w-[26px] mt-[5px]" />
+    //             <div>
+    //               <p>{weatherData.humidity}%</p>
+    //               <span className="block text-sm">Humidity</span>
+    //             </div>
+    //           </div>
+
+    //           {/* Wind */}
+    //           <div className="flex items-start gap-3 text-[20px]">
+    //             <img src={wind_icon} alt="" className="w-[26px] mt-[5px]" />
+    //             <div>
+    //               <p>{weatherData.windSpeed} km/h</p>
+    //               <span className="block text-sm">Wind Speed</span>
+    //             </div>
+    //           </div>
+
+    //           {/*current local time*/}
+    //           <div className="flex items-start gap-3 text-[20px]">
+    //             <img src={timezone_icon} alt="" className="w-[26px] mt-[5px]" />
+    //             <div>
+    //               <p>{weatherData.localTime} </p>
+    //               <span className="block text-sm">Local Time</span>
+    //             </div>
+    //           </div>
+
+
+    //           {/* Sunrise */}
+    //           <div className="flex items-start gap-3 text-[20px]">
+    //             <img src={sunrise_icon} alt="" className="w-8" />
+    //             <div>
+    //               <p>{formatTime(weatherData.sunrise)}</p>
+    //               <span className="block text-sm">Sunrise</span>
+    //             </div>
+    //           </div>
+
+    //           {/* Sunset */}
+    //           <div className="flex items-start gap-3 text-[20px]">
+    //             <img src={sunset_icon} alt="" className="w-12" />
+    //             <div>
+    //               <p>{formatTime(weatherData.sunset)}</p>
+    //               <span className="block text-sm">Sunset</span>
+    //             </div>
+    //           </div>
+    //         </div>
+
+    //         {/* 5-day Forecast */}
+    //         {weatherData.forecast && (
+    //           <div className="mt-8 w-full bg-white/10 rounded-xl p-4">
+    //             <h3 className="text-white text-lg mb-3">5-Day Forecast</h3>
+    //             <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+    //               {weatherData.forecast
+    //                 .filter((_, index) => index % 8 === 0) // every 8th ~ 1 day
+    //                 .map((item, idx) => (
+    //                   <div key={idx} className="text-center text-white">
+    //                     <p>
+    //                       {new Date(item.dt * 1000).toLocaleDateString("en-US", {
+    //                         weekday: "short",
+    //                       })}
+    //                     </p>
+    //                     <img
+    //                       src={`https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
+    //                       alt=""
+    //                       className="mx-auto w-12"
+    //                     />
+    //                     <p>{Math.round(item.main.temp)}°C</p>
+    //                   </div>
+    //                 ))}
+    //             </div>
+    //           </div>
+    //         )}
+    //       </>
+    //     )}
+    //   </div>
+    // </div>
+
+
+    <div className="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
+  {/* Background Video */}
+  {weatherData && (
+    <video
+      key={weatherData.condition}
+      autoPlay
+      loop
+      muted
+      playsInline
+      className="absolute inset-0 w-full h-full object-cover"
+      src={videoBackgrounds[weatherData.condition] || cloudy_video}
+    />
+  )}
+
+  {/* Overlay */}
+  <div className="absolute inset-0 bg-black/30"></div>
+
+  {/* Foreground */}
+  <div className="relative z-10 mt-6 mb-6 place-self-center 
+                  p-6 sm:p-8 md:p-10 lg:p-12 
+                  rounded-xl shadow-xl flex flex-col items-center 
+                  w-[95%] sm:w-[90%] max-w-lg bg-black/20 backdrop-blur-md">
+    
+    {/* Search bar */}
+    <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 w-full mb-4">
+      <input
+        ref={inputRef}
+        type="text"
+        placeholder="Search city..."
+        onKeyDown={(e) => e.key === "Enter" && search(inputRef.current.value)}
+        className="flex-1 h-[45px] sm:h-[50px] rounded-full pl-4 sm:pl-6 text-[#626262] bg-[#ebfffc] text-base sm:text-lg outline-none focus:ring-2 focus:ring-blue-300 transition"
+      />
+      <div className="flex gap-2 justify-center sm:justify-start sm:ml-[50px] lg:ml-0">
+  <img
+    src={search_icon}
+    alt="Search"
+    onClick={() => search(inputRef.current.value)}
+    className="w-[40px] sm:w-[50px] p-[10px] sm:p-[15px] rounded-full bg-[#ebfffc] cursor-pointer hover:scale-110 transition-transform"
+  />
+  <img
+    src={mic_icon}
+    alt="Voice Search"
+    onClick={startVoiceSearch}
+    className="w-[40px] sm:w-[50px] p-[8px] sm:p-[12px] rounded-full bg-[#ebfffc] cursor-pointer hover:scale-110 transition-transform"
+  />
+  <img
+    src={volume_icon}
+    alt="Speaker"
+    onClick={speakWeather}
+    className="w-[40px] sm:w-[50px] p-[8px] sm:p-[12px] rounded-full bg-[#ebfffc] cursor-pointer hover:scale-110 transition-transform"
+  />
+</div>
+    </div>
+
+    {/* Loading & Error */}
+    {loading && <p className="text-white text-lg">Loading...</p>}
+    {error && <p className="text-red-500">{error}</p>}
+
+    {/* Weather Info */}
+    {weatherData && !loading && (
+      <>
+        <img src={weatherData.icon} alt="" className="w-[100px] sm:w-[150px] my-4 transition-transform duration-500 hover:scale-110" />
+        <p className="text-white text-[40px] sm:text-[60px] leading-none font-semibold">{weatherData.temperature}°C</p>
+        <p className="text-white text-sm sm:text-md italic mb-2">Feels like {weatherData.feelsLike}°C</p>
+        <p className="text-white text-[28px] sm:text-[40px] font-medium">{weatherData.location}</p>
+
+        {/* Stats */}
+        <div className="w-full mt-8 text-white grid grid-cols-2 sm:flex sm:flex-wrap sm:justify-between gap-4 sm:gap-6">
+          {/* Humidity */}
+          <div className="flex items-start gap-2 sm:gap-3 text-sm sm:text-[20px]">
+            <img src={humidity_icon} alt="" className="w-[20px] sm:w-[26px] mt-[5px]" />
+            <div>
+              <p>{weatherData.humidity}%</p>
+              <span className="block text-xs sm:text-sm">Humidity</span>
+            </div>
+          </div>
+
+          {/* Wind */}
+          <div className="flex items-start gap-2 sm:gap-3 text-sm sm:text-[20px]">
+            <img src={wind_icon} alt="" className="w-[20px] sm:w-[26px] mt-[5px]" />
+            <div>
+              <p>{weatherData.windSpeed} km/h</p>
+              <span className="block text-xs sm:text-sm">Wind Speed</span>
+            </div>
+          </div>
+
+          {/* Local Time */}
+          <div className="flex items-start gap-2 sm:gap-3 text-sm sm:text-[20px]">
+            <img src={timezone_icon} alt="" className="w-[20px] sm:w-[26px] mt-[5px]" />
+            <div>
+              <p>{weatherData.localTime}</p>
+              <span className="block text-xs sm:text-sm">Local Time</span>
+            </div>
+          </div>
+
+          {/* Sunrise */}
+          <div className="flex items-start gap-2 sm:gap-3 text-sm sm:text-[20px]">
+            <img src={sunrise_icon} alt="" className="w-6 sm:w-8" />
+            <div>
+              <p>{formatTime(weatherData.sunrise)}</p>
+              <span className="block text-xs sm:text-sm">Sunrise</span>
+            </div>
+          </div>
+
+          {/* Sunset */}
+          <div className="flex items-start gap-2 sm:gap-3 text-sm sm:text-[20px]">
+            <img src={sunset_icon} alt="" className="w-8 sm:w-12" />
+            <div>
+              <p>{formatTime(weatherData.sunset)}</p>
+              <span className="block text-xs sm:text-sm">Sunset</span>
+            </div>
+          </div>
         </div>
 
-        {/* Loading & Error */}
-        {loading && <p className="text-white text-lg">Loading...</p>}
-        {error && <p className="text-red-500">{error}</p>}
-
-        {/* Weather Info */}
-        {weatherData && !loading && (
-          <>
-            <img
-              src={weatherData.icon}
-              alt=""
-              className="w-[150px] my-[15px] transition-transform duration-500 hover:scale-110"
-            />
-            <p className="text-white text-[60px] leading-none font-semibold">
-              {weatherData.temperature}°C
-            </p>
-            <p className="text-white text-md italic mb-2">
-              Feels like {weatherData.feelsLike}°C
-            </p>
-            <p className="text-white text-[40px] font-medium">
-              {weatherData.location}
-            </p>
-
-            {/* Stats */}
-            <div className="w-full mt-8 text-white flex flex-wrap justify-between gap-6">
-              {/* Humidity */}
-              <div className="flex items-start gap-3 text-[20px]">
-                <img src={humidity_icon} alt="" className="w-[26px] mt-[5px]" />
-                <div>
-                  <p>{weatherData.humidity}%</p>
-                  <span className="block text-sm">Humidity</span>
-                </div>
-              </div>
-
-              {/* Wind */}
-              <div className="flex items-start gap-3 text-[20px]">
-                <img src={wind_icon} alt="" className="w-[26px] mt-[5px]" />
-                <div>
-                  <p>{weatherData.windSpeed} km/h</p>
-                  <span className="block text-sm">Wind Speed</span>
-                </div>
-              </div>
-
-              {/*current local time*/}
-              <div className="flex items-start gap-3 text-[20px]">
-                <img src={timezone_icon} alt="" className="w-[26px] mt-[5px]" />
-                <div>
-                  <p>{weatherData.localTime} </p>
-                  <span className="block text-sm">Local Time</span>
-                </div>
-              </div>
-
-
-              {/* Sunrise */}
-              <div className="flex items-start gap-3 text-[20px]">
-                <img src={sunrise_icon} alt="" className="w-8" />
-                <div>
-                  <p>{formatTime(weatherData.sunrise)}</p>
-                  <span className="block text-sm">Sunrise</span>
-                </div>
-              </div>
-
-              {/* Sunset */}
-              <div className="flex items-start gap-3 text-[20px]">
-                <img src={sunset_icon} alt="" className="w-12" />
-                <div>
-                  <p>{formatTime(weatherData.sunset)}</p>
-                  <span className="block text-sm">Sunset</span>
-                </div>
-              </div>
+        {/* 5-day Forecast */}
+        {weatherData.forecast && (
+          <div className="mt-8 w-full bg-white/10 rounded-xl p-4">
+            <h3 className="text-white text-base sm:text-lg mb-3">5-Day Forecast</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+              {weatherData.forecast
+                .filter((_, index) => index % 8 === 0)
+                .map((item, idx) => (
+                  <div key={idx} className="text-center text-white">
+                    <p>{new Date(item.dt * 1000).toLocaleDateString("en-US", { weekday: "short" })}</p>
+                    <img src={`https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`} alt="" className="mx-auto w-10 sm:w-12" />
+                    <p>{Math.round(item.main.temp)}°C</p>
+                  </div>
+                ))}
             </div>
-
-            {/* 5-day Forecast */}
-            {weatherData.forecast && (
-              <div className="mt-8 w-full bg-white/10 rounded-xl p-4">
-                <h3 className="text-white text-lg mb-3">5-Day Forecast</h3>
-                <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
-                  {weatherData.forecast
-                    .filter((_, index) => index % 8 === 0) // every 8th ~ 1 day
-                    .map((item, idx) => (
-                      <div key={idx} className="text-center text-white">
-                        <p>
-                          {new Date(item.dt * 1000).toLocaleDateString("en-US", {
-                            weekday: "short",
-                          })}
-                        </p>
-                        <img
-                          src={`https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
-                          alt=""
-                          className="mx-auto w-12"
-                        />
-                        <p>{Math.round(item.main.temp)}°C</p>
-                      </div>
-                    ))}
-                </div>
-              </div>
-            )}
-          </>
+          </div>
         )}
-      </div>
-    </div>
+      </>
+    )}
+  </div>
+</div>
+
   );
 };
 
