@@ -102,7 +102,7 @@ const speakWeather = () => {
     const speech = new SpeechSynthesisUtterance(
       `Currently in ${weatherData.location}, it is ${weatherData.temperature} degrees Celsius, 
       feels like ${weatherData.feelsLike} degrees. 
-      Weather condition is ${weatherData.condition}. 
+      Weather condition is ${weatherData.description}. 
       The current local time is ${weatherData.localTime}.
       Humidity is ${weatherData.humidity} percent and wind speed is ${weatherData.windSpeed} kilometers per hour.`
     );
@@ -160,6 +160,7 @@ const speakWeather = () => {
         windSpeed: data.wind.speed,
         temperature: Math.floor(data.main.temp),
         feelsLike: Math.floor(data.main.feels_like),
+        description: data.weather[0].description,
         location: data.name,
         icon: icon,
         sunrise: data.sys.sunrise,
@@ -251,10 +252,11 @@ const speakWeather = () => {
     {/* Weather Info */}
     {weatherData && !loading && (
       <>
-        <img src={weatherData.icon} alt="" className="w-[100px] sm:w-[150px] my-4 transition-transform duration-500 hover:scale-110" />
+        <img src={weatherData.icon} alt="" className="w-[100px] sm:w-[150px]  transition-transform duration-500 hover:scale-110" />
+         <p className="text-white mb-2 text-[16px] sm:text-[22px] font-light">{weatherData.description}</p>
         <p className="text-white text-[40px] sm:text-[60px] leading-none font-semibold">{weatherData.temperature}°C</p>
         <p className="text-white text-sm sm:text-md italic mb-2">Feels like {weatherData.feelsLike}°C</p>
-        <p className="text-white text-[28px] sm:text-[40px] font-medium">{weatherData.location}</p>
+        <p className="text-white text-[35px] sm:text-[44px] font-semibold">{weatherData.location}</p>
 
         {/* Stats */}
         <div className="w-full mt-8 text-white grid grid-cols-2 sm:flex sm:flex-wrap sm:justify-between gap-4 sm:gap-6">
